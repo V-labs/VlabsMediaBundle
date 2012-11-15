@@ -1,0 +1,35 @@
+{
+    "name": "vlabs/media-bundle",
+    "type": "symfony-bundle",
+    "description": "Form, database and filesystem abstraction for files",
+    "keywords": ["files"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Valentin Ferriere",
+            "homepage": "http://www.v-labs.fr"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": ">=2.1.x-dev",
+        "imagine/Imagine": "dev-master",
+        "doctrine/orm": "*"
+    },
+    
+    "require-dev": {
+        "doctrine/mongodb-odm-bundle": "*"
+    },
+    
+    "suggest": {
+        "doctrine/mongodb-odm-bundle": "*"
+    },
+
+    "autoload": {
+        "psr-0": { "Vlabs\\MediaBundle": "" }
+    },
+
+    "target-dir": "Vlabs/MediaBundle"
+}

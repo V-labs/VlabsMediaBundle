@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="vlabs_media.type.file.class">Vlabs\MediaBundle\Form\Type\FileType</parameter>
+        <parameter key="vlabs_media.listener.uploader.class">Vlabs\MediaBundle\EventListener\UploaderListener</parameter>
+        <parameter key="vlabs_media.handler_factory.class">Vlabs\MediaBundle\Handler\HandlerFactory</parameter>
+        <parameter key="vlabs_media.handler.local_file_system.class">Vlabs\MediaBundle\Handler\LocalFileSystemHandler</parameter>
+        <parameter key="vlabs_media.annotation.media_reader.class">Vlabs\MediaBundle\Annotation\MediaReader</parameter>
+        <parameter key="vlabs_media.handler.manager.class">Vlabs\MediaBundle\Handler\HandlerManager</parameter>
+        <parameter key="vlabs_media.handler.abstract_handler.mail_manager.class">Vlabs\MediaBundle\Handler\AbstractHandler</parameter>
+        <parameter key="vlabs_media_twig_extension.class">Vlabs\MediaBundle\Extension\TwigExtension</parameter>
+        <parameter key="vlabs_media.type.del_file.class">Vlabs\MediaBundle\Form\Type\DelFileType</parameter>
+    </parameters>
+
+    <services>
+        <!-- Namer -->
+        <service id="vlabs_media.namer" class="%vlabs_media.namer.class%" />
+
+        <!-- Annotations -->
+        <service id="vlabs_media.annotation.media_reader" class="%vlabs_media.annotation.media_reader.class%" />
+
+        <!-- adapter -->
+        <service id="vlabs_media.adapter" class="%vlabs_media.adapter.class%" public="false" />
+
+        <!-- image resizer -->
+        <service id="vlabs_media.image_manipulator" class="%vlabs_media.image_manipulator.class%" public="false">
+            <argument>%vlabs_media.cache_dir%</argument>
+        </service>
+
+        <!-- Handlers -->
+        <service id="vlabs_media.handler.abstract_handler" class="%vlabs_media.handler.abstract_handler.mail_manager.class%" abstract="true">
+            <call method="setNamer">
+                <argument type="service" id="vlabs_media.namer" />
+            </call>
+        </service>
+        <service id="vlabs_media.handler.local_file_system" class="%vlabs_media.handler.local_file_system.class%" parent="vlabs_media.handler.abstract_handler" />
+
+        <!-- Handler factory -->
+        <service id="vlabs_media.handler_factory" class="%vlabs_media.handler_factory.class%" public="false">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <!-- Handler manager -->
+        <service id="vlabs_media.handler.manager" class="%vlabs_media.handler.manager.class%" public="false">
+            <argument type="service" id="vlabs_media.annotation.media_reader" />
+            <argument type="service" id="vlabs_media.handler_factory" />
+            <argument type="service" id="vlabs_media.adapter" />
+        </service>
+
+        <!-- form type -->
+        <service id="vlabs_media.type.file" class="%vlabs_media.type.file.class%">
+            <argument type="service" id="vlabs_media.handler.manager" />
+            <tag name="form.type" alias="vlabs_file" />
+        </service>
+
+        <service id="vlabs_media.type.del_file" class="%vlabs_media.type.del_file.class%">
+            <tag name="form.type" alias="vlabs_del_file" />
+        </service>
+
+        <!-- listeners -->
+        <service id="vlabs_media.listener.uploader" class="%vlabs_media.listener.uploader.class%" public="false">
+            <argument type="service" id="vlabs_media.handler.manager" />
+            <argument type="service" id="vlabs_media.image_manipulator" />
+        </service>
+
+        <!-- twig -->
+        <service id="vlabs_media_twig_extension" class="%vlabs_media_twig_extension.class%" public="false">
+            <argument type="service" id="vlabs_media.handler.manager" />
+            <argument type="service" id="vlabs_media.image_manipulator" />
+            <argument>%vlabs_media.templates%</argument>
+            <tag name="twig.extension" />
+        </service>
+    </services>
+</container>

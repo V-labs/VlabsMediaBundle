@@ -1,0 +1,6 @@
+{% block vlabs_file_widget %}
+    <div class="da-form-item-large">
+        {{ form_widget(form) }}
+    </div>
+    {{ formPreview(form.vars.name, form.parent.vars.data, { resize : { 'width' : 90 , 'height' : 90 } }) }}
+{% endblock %}
