@@ -1,9 +1,23 @@
 <?php
 
+/*
+ * This file is part of the VlabsMediaBundle package.
+ *
+ * (c) Valentin Ferriere <http://www.v-labs.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Vlabs\MediaBundle\Annotation;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 
+/**
+* Read values and store metadatas for the Media annotation
+*
+* @author Valentin Ferriere <valentin.ferriere@gmail.com>
+*/
 class MediaReader
 {
     private $annotationClass = 'Vlabs\MediaBundle\Annotation\Vlabs\Media';

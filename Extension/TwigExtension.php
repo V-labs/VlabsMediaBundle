@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the VlabsMediaBundle package.
+ *
+ * (c) Valentin Ferriere <http://www.v-labs.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Vlabs\MediaBundle\Extension;
 
 use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
@@ -7,6 +16,11 @@ use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Tools\ImageManipulatorInterface;
 
+/**
+ * Twig function for displaying medias
+ *
+ * @author Valentin Ferriere <valentin.ferriere@gmail.com>
+ */
 class TwigExtension extends \Twig_Extension
 {
     /* @var \Twig_Environment */
@@ -87,10 +101,10 @@ class TwigExtension extends \Twig_Extension
 
         /* @var $template \Twig_TemplateInterface */
         if ($wantedTemplate != null) {
-            if(array_key_exists($wantedTemplate, $this->templates)) {
+            if (array_key_exists($wantedTemplate, $this->templates)) {
                 $wantedTemplate = $this->templates[$wantedTemplate];
             }
-            
+
             $template = $this->environment->loadTemplate($wantedTemplate);
         } else {
             $template = $this->environment->loadTemplate($this->templates['default']);

@@ -3,7 +3,7 @@ Installation & usage
 
 This bundle provides an interface which defines physical media: an image, a pdf etc. ..
 
-All media are considered as objects, and if they implement the **BaseFileInterface** they will be automatically persisted, moved and you will manipulate them as text fields in forms.
+All media are considered as objects, and if they implement the **[BaseFileInterface](https://github.com/V-labs/VlabsMediaBundle/blob/master/Entity/BaseFileInterface.php)** they will be automatically persisted, moved and you will manipulate them as text fields in forms.
 
 
 Installation
@@ -85,7 +85,7 @@ So for our Image class :
 
     }
     
-As you can see, our **Image** class is extending [VlabsFile](http://example.com/), which is an abstract class that implements the properties that you do not want to handle during a media processing.
+As you can see, our **Image** class is extending [VlabsFile](https://github.com/V-labs/VlabsMediaBundle/blob/master/Entity/BaseFile.php), which is an abstract class that implements the properties that you do not want to handle during a media processing.
 
 The only property that is not implemented is **path**, this allow you to perform validations on your media. Here you use Symfony validators on the property.
 

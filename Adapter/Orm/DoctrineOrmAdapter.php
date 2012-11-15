@@ -1,11 +1,23 @@
 <?php
 
+/*
+ * This file is part of the VlabsMediaBundle package.
+ *
+ * (c) Valentin Ferriere <http://www.v-labs.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Vlabs\MediaBundle\Adapter\Orm;
 
 use Doctrine\Common\EventArgs;
 use Doctrine\ORM\Proxy\Proxy;
 use Vlabs\MediaBundle\Adapter\AdapterInterface;
 
+/**
+ * @author Valentin Ferriere <valentin.ferriere@gmail.com>
+ */
 class DoctrineOrmAdapter implements AdapterInterface
 {
     /**

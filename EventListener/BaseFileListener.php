@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the VlabsMediaBundle package.
+ *
+ * (c) Valentin Ferriere <http://www.v-labs.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Vlabs\MediaBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -11,6 +20,13 @@ use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Form\Type\DelFileType;
 
+/**
+ * Handle form process
+ * Display a delete checkbox if needed
+ * Triggers upload process or data setting
+ *
+ * @author Valentin Ferriere <valentin.ferriere@gmail.com>
+ */
 class BaseFileListener implements EventSubscriberInterface
 {
     private $handlerManager;

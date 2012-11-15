@@ -30,5 +30,13 @@ To do
 
 +   Gaufrette implementation
 +   Ajax upload form type
++   Cache warmer
 +   Real namer tool
 +   Full abstraction of file deletion
+
+License
+-------
+
+This bundle is under the MIT license. See the complete license in the bundle:
+
+    Resources/meta/LICENSE

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the VlabsMediaBundle package.
+ *
+ * (c) Valentin Ferriere <http://www.v-labs.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Vlabs\MediaBundle\Tools;
 
 use Symfony\Component\Finder\Finder;
@@ -7,6 +16,9 @@ use Imagine\Image\ImageInterface,
     Imagine\Image\Box,
     Imagine\Gd\Imagine;
 
+/**
+ * @author Valentin Ferriere <valentin.ferriere@gmail.com>
+ */
 class ImageManipulator implements ImageManipulatorInterface
 {
     protected $newPath;

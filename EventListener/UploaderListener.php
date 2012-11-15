@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the VlabsMediaBundle package.
+ *
+ * (c) Valentin Ferriere <http://www.v-labs.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Vlabs\MediaBundle\EventListener;
 
 use Doctrine\Common\EventArgs;
@@ -8,6 +17,12 @@ use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Tools\ImageManipulatorInterface;
 
+/**
+ * Handle file system operation
+ * Move & remove medias
+ *
+ * @author Valentin Ferriere <valentin.ferriere@gmail.com>
+ */
 class UploaderListener implements EventSubscriber
 {
     private $handlerManager;
