@@ -29,6 +29,6 @@ To do
 -----
 
 +   Gaufrette implementation
-+   Ajax form type
++   Ajax upload form type
 +   Real namer tool
 +   Full abstraction of file deletion
