@@ -11,7 +11,7 @@ To make an entity managed by one of your handler, simply add it to the bundle co
 
 services.xml
 
-    <service id="my_foo.handler.amazon_s3" class="My\FooBundle\Handler\AmazonS3" parent="my_foo.handler.abstract_handler" />
+    <service id="my_foo.handler.amazon_s3" class="My\FooBundle\Handler\AmazonS3" parent="vlabs_media.handler.abstract_handler" />
     
 Here we are extending the [AbstractHandler](https://github.com/V-labs/VlabsMediaBundle/blob/master/Handler/AbstractHandler.php) provided by the bundle. 
 He is already managing the [BaseFile](https://github.com/V-labs/VlabsMediaBundle/blob/master/Entity/BaseFile.php) creation, [Namer](https://github.com/V-labs/VlabsMediaBundle/blob/master/Tools/Namer.php) tool injection, and all the getters & setters.
@@ -19,13 +19,11 @@ He is already managing the [BaseFile](https://github.com/V-labs/VlabsMediaBundle
 
 If you want to reimplement the entire interface, you must inject a **Namer** object in your handler (which you can manage via the configuration, simply call the getter with the **vlabs_media.namer** service).
 
-    <service id="my_foo.handler.abstract_handler" class="My\FooBundle\Handler\AbstractHandler" abstract="true">
+    <service id="my_foo.handler.amazon_s3" class="My\FooBundle\Handler\AmazonS3">
         <call method="setNamer">
             <argument type="service" id="vlabs_media.namer" />
         </call>
     </service>
-    
-    <service id="my_foo.handler.amazon_s3" class="My\FooBundle\Handler\AmazonS3" parent="my_foo.handler.abstract_handler" />
 
 And then, simply put it on your wanted entity :
 

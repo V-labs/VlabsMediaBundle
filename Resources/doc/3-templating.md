@@ -39,15 +39,16 @@ will give you access in the `MyFooBundle:Templates:image.html.twig` template to 
 If your media is extending from [Vlabs\MediaBundle\Entity\BaseFile](https://github.com/V-labs/VlabsMediaBundle/blob/master/Entity/BaseFile.php), you will also have access to all this properties.
 
 
-There are five templates provided by default with the bundle, you can (must?) replace. Just change the path of template in the configuration.
+There are six templates provided by default with the bundle, you can (must?) replace. Just change the path of template in the configuration.
 
     default: VlabsMediaBundle:Templates:default.html.twig  # return the media path
     image: VlabsMediaBundle:Templates:image.html.twig  # return a `img` tag with path as src
-    form_doc: VlabsMediaBundle:Templates:form_doc.html.twig # return a `a` tag with path as href and 'View' as label 
+    form_doc: VlabsMediaBundle:Form:form_doc.html.twig # return a `a` tag with path as href and 'View' as label 
+    form_image: VlabsMediaBundle:Form:form_image.html.twig # return a `img` tag with path as src
     vlabs_file: VlabsMediaBundle:Form:vlabs_file.html.twig
     vlabs_del: VlabsMediaBundle:Form:vlabs_del_file.html.twig
 
-The last two lines are template used in forms.
+The last four lines are template used in forms.
 
 
 ###Using form templates & twig form helper
@@ -59,7 +60,8 @@ To manage your media in forms, two templates are available:
 
 Both templates are tagged as `form.type` and can be used in form process.   
 
-The **vlabs_file** template is using a wrapper called **[formPreview](https://github.com/V-labs/VlabsMediaBundle/blob/master/Extension/TwigExtension.php#L38)** to handle the display of an image or another type. Image will be displayed if the file have jpeg, gif or png as extension. 
+The **vlabs_file** template is using a wrapper called **[formPreview](https://github.com/V-labs/VlabsMediaBundle/blob/master/Extension/TwigExtension.php#L38)** to handle the display of an image or another type. 
+Image will be displayed with form_image if the file have jpeg, gif or png as extension, others are displayed with form_doc. 
 Once the right media type is found, the `media()` function is called.
 
 Documentation

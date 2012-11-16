@@ -11,7 +11,6 @@
 
 namespace Vlabs\MediaBundle\Extension;
 
-use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Tools\ImageManipulatorInterface;
@@ -55,12 +54,10 @@ class TwigExtension extends \Twig_Extension
         $baseFile = $datas->$getter();
 
         if ($baseFile instanceof BaseFileInterface) {
-            $guesser = ExtensionGuesser::getInstance();
-            $ext = $guesser->guess($baseFile->getContentType());
-
-            switch ($ext) {
-                case 'jpeg': case 'gif': case 'png':
-                    $template = $this->templates['image'];
+            
+            switch ($baseFile->getContentType()) {
+                case 'image/jpeg': case 'image/png': case 'image/gif':
+                    $template = $this->templates['form_image'];
                     break;
                 default :
                     $options = null;
@@ -98,7 +95,7 @@ class TwigExtension extends \Twig_Extension
         }
 
         unset($file);
-
+        
         /* @var $template \Twig_TemplateInterface */
         if ($wantedTemplate != null) {
             if (array_key_exists($wantedTemplate, $this->templates)) {

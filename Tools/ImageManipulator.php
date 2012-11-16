@@ -37,7 +37,7 @@ class ImageManipulator implements ImageManipulatorInterface
                 $formats['height'],
                 $name
         );
-
+        
         if (!is_file($this->newPath)) {
             @mkdir(sprintf('%s/', $this->cacheDir));
             @mkdir(sprintf('%s/%sx%s', $this->cacheDir, $formats['width'], $formats['height']));

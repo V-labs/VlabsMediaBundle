@@ -73,13 +73,17 @@ class VlabsMediaExtension extends Extension
         if (!array_key_exists('vlabs_del', $config['templates'])) {
             $config['templates']['vlabs_del'] = 'VlabsMediaBundle:Form:vlabs_del_file.html.twig';
         }
+        
+        if (!array_key_exists('form_doc', $config['templates'])) {
+            $config['templates']['form_doc'] = 'VlabsMediaBundle:Form:form_doc.html.twig';
+        }
+        
+        if (!array_key_exists('form_image', $config['templates'])) {
+            $config['templates']['form_image'] = 'VlabsMediaBundle:Form:form_image.html.twig';
+        }
 
         if (!array_key_exists('default', $config['templates'])) {
             $config['templates']['default'] = 'VlabsMediaBundle:Templates:default.html.twig';
-        }
-
-        if (!array_key_exists('form_doc', $config['templates'])) {
-            $config['templates']['form_doc'] = 'VlabsMediaBundle:Templates:form_doc.html.twig';
         }
 
         if (!array_key_exists('image', $config['templates'])) {
