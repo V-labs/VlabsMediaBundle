@@ -16,7 +16,7 @@ use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Tools\ImageManipulatorInterface;
 
 /**
- * Twig function for displaying medias
+ * Twig functions for displaying medias
  *
  * @author Valentin Ferriere <valentin.ferriere@gmail.com>
  */
@@ -50,6 +50,10 @@ class TwigExtension extends \Twig_Extension
 
     public function getPreview($prop, $datas, $options = array())
     {
+        if($datas == null) {
+            return;
+        }
+        
         $getter = 'get'.ucfirst($prop);
         $baseFile = $datas->$getter();
 
@@ -60,7 +64,7 @@ class TwigExtension extends \Twig_Extension
                     $template = $this->templates['form_image'];
                     break;
                 default :
-                    $options = null;
+                    $options['resize'] = null;
                     $template = $this->templates['form_doc'];
                     break;
             }

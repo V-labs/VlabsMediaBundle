@@ -96,11 +96,11 @@ class UploaderListener implements EventSubscriber
         $entity = $this->handlerManager->getAdapter()->getObject($args);
 
         if ($entity instanceof BaseFileInterface) {
-            foreach ($this->toRemove as $path) {
-                $handler = $this->handlerManager->getHandlerForDelete(
+            $handler = $this->handlerManager->getHandlerForDelete(
                     $this->handlerManager->getAdapter()->getClass($entity)
                 );
-
+            
+            foreach ($this->toRemove as $path) {
                 $handler->remove($path);
             }
         }

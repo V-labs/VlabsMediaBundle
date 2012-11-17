@@ -41,12 +41,14 @@ class ImageManipulator implements ImageManipulatorInterface
         if (!is_file($this->newPath)) {
             @mkdir(sprintf('%s/', $this->cacheDir));
             @mkdir(sprintf('%s/%sx%s', $this->cacheDir, $formats['width'], $formats['height']));
-
-            $imagine = new Imagine();
-            $imagine
-                ->open($path)
-                ->thumbnail(new Box($formats['width'], $formats['height']), ImageInterface::THUMBNAIL_OUTBOUND)
-                ->save($this->newPath);
+            
+            if(is_file($path)) {
+                $imagine = new Imagine();
+                $imagine
+                    ->open($path)
+                    ->thumbnail(new Box($formats['width'], $formats['height']), ImageInterface::THUMBNAIL_OUTBOUND)
+                    ->save($this->newPath);
+            }
         }
     }
 
