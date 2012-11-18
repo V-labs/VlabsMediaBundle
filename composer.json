@@ -2,7 +2,7 @@
     "name": "vlabs/media-bundle",
     "type": "symfony-bundle",
     "description": "Form, database and filesystem abstraction for files",
-    "keywords": ["files"],
+    "keywords": ["files", "upload", "media"],
     "license": "MIT",
     "minimum-stability": "dev",
     "authors": [
