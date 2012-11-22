@@ -53,7 +53,10 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
             ->children()
-
+                ->arrayNode('cdn')
+                    ->useAttributeAsKey('name')
+                    ->prototype('scalar')->end()
+                ->end()
             ->end()
             ->children()
                 ->arrayNode('mapping')->isRequired()

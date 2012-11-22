@@ -14,6 +14,8 @@
         <parameter key="vlabs_media.handler.abstract_handler.mail_manager.class">Vlabs\MediaBundle\Handler\AbstractHandler</parameter>
         <parameter key="vlabs_media_twig_extension.class">Vlabs\MediaBundle\Extension\TwigExtension</parameter>
         <parameter key="vlabs_media.type.del_file.class">Vlabs\MediaBundle\Form\Type\DelFileType</parameter>
+        <parameter key="vlabs_media.handler.gaufrette.class">Vlabs\MediaBundle\Handler\GaufretteHandler</parameter>
+        <parameter key="vlabs_media.annotation.cdn_reader.class">Vlabs\MediaBundle\Annotation\CdnReader</parameter>
     </parameters>
 
     <services>
@@ -22,6 +24,9 @@
 
         <!-- Annotations -->
         <service id="vlabs_media.annotation.media_reader" class="%vlabs_media.annotation.media_reader.class%" />
+        <service id="vlabs_media.annotation.cdn_reader" class="%vlabs_media.annotation.cdn_reader.class%" >
+            <argument type="service" id="vlabs_media.adapter" />
+        </service>
 
         <!-- adapter -->
         <service id="vlabs_media.adapter" class="%vlabs_media.adapter.class%" public="false" />
@@ -38,6 +43,9 @@
             </call>
         </service>
         <service id="vlabs_media.handler.local_file_system" class="%vlabs_media.handler.local_file_system.class%" parent="vlabs_media.handler.abstract_handler" />
+        <service id="vlabs_media.handler.gaufrette" class="%vlabs_media.handler.gaufrette.class%" parent="vlabs_media.handler.abstract_handler" >
+            <argument type="service" id="vlabs_media.annotation.cdn_reader" />
+        </service>
 
         <!-- Handler factory -->
         <service id="vlabs_media.handler_factory" class="%vlabs_media.handler_factory.class%" public="false">

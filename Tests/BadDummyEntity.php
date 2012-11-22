@@ -17,6 +17,14 @@ class BadDummyEntity
      * @Assert\Valid()
      */
     private $file;
+    
+    /**
+     * @var DummyFile
+     *
+     * @Vlabs\Media(identifier="dummy_identifier")
+     * @Assert\Valid()
+     */
+    private $video;
 
     /**
      * Set file

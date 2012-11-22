@@ -105,7 +105,7 @@ class HandlerManager
                 break;
             }
         }
-
+        
         return $handler;
     }
 

@@ -62,6 +62,7 @@ class VlabsMediaExtension extends Extension
 
         $container->getDefinition('vlabs_media.listener.uploader')->addTag($this->driverTags[$config['driver']]);
         $container->getDefinition('vlabs_media.handler.manager')->addMethodCall('setConfig', array($config['mapping']));
+        $container->getDefinition('vlabs_media.annotation.cdn_reader')->addMethodCall('setConfig', array($config['cdn']));
     }
 
     public function addDefaultTemplates(&$config)

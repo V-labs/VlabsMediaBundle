@@ -26,17 +26,17 @@ class LocalFileSystemHandler extends AbstractHandler
     */
     public function move(BaseFileInterface $baseFile)
     {
+        $name = $this->getNamer()->rename($baseFile);
         $file = new File($this->getUri($baseFile));
-        $name = $this->getNamer()->rename($file);
-
-        $file = $file->move($this->getUploadDir(), $name);
 
         $baseFile->setPath(sprintf('%s/%s',
-                $file->getPath(),
+                $this->getUploadDir(),
                 $name
         ));
 
         $baseFile->setName($name);
+        
+        $file->move($this->getUploadDir(), $name);
     }
 
     /**

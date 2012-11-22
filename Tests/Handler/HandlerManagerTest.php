@@ -38,6 +38,12 @@ class HandlerManagerTest extends \PHPUnit_Framework_TestCase
                 $toReturn = $this->getMockBuilder('Vlabs\MediaBundle\Handler\LocalFileSystemHandler')
                                 ->disableOriginalConstructor()
                                 ->getMock();
+                break;
+            case 'vlabs_media.handler.gaufrette':
+                $toReturn = $this->getMockBuilder('Vlabs\MediaBundle\Handler\GaufretteHandler')
+                                ->disableOriginalConstructor()
+                                ->getMock();
+                break;
         }
 
         $mock
@@ -52,7 +58,8 @@ class HandlerManagerTest extends \PHPUnit_Framework_TestCase
     public function handlersBag()
     {
         return array(
-            array('vlabs_media.handler.local_file_system', 'Vlabs\MediaBundle\Handler\LocalFileSystemHandler')
+            array('vlabs_media.handler.local_file_system', 'Vlabs\MediaBundle\Handler\LocalFileSystemHandler'),
+            array('vlabs_media.handler.gaufrette', 'Vlabs\MediaBundle\Handler\GaufretteHandler')
         );
     }
 

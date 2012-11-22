@@ -79,10 +79,10 @@ class UploaderListener implements EventSubscriber
 
         if ($entity instanceof BaseFileInterface) {
             $handler = $this->handlerManager->getHandlerForObject($entity);
-            $this->toRemove[] = $handler->getUri($entity);
+            $this->toRemove[get_class($handler)][] = $handler->getUri($entity);
 
             $cachedPaths = $this->im->getAllCachedPaths($entity->getName());
-            $this->toRemove = array_merge($this->toRemove, $cachedPaths);
+            $this->toRemove[get_class($handler)] = array_merge($this->toRemove[get_class($handler)], $cachedPaths);
         }
     }
 
@@ -94,14 +94,18 @@ class UploaderListener implements EventSubscriber
     public function postRemove(EventArgs $args)
     {
         $entity = $this->handlerManager->getAdapter()->getObject($args);
-
+        
         if ($entity instanceof BaseFileInterface) {
             $handler = $this->handlerManager->getHandlerForDelete(
                     $this->handlerManager->getAdapter()->getClass($entity)
                 );
             
-            foreach ($this->toRemove as $path) {
-                $handler->remove($path);
+            foreach ($this->toRemove as $handlerClass => $paths) {
+                if(get_class($handler) == $handlerClass) {
+                    foreach($paths as $path) {
+                        $handler->remove($path);
+                    }
+                }
             }
         }
     }

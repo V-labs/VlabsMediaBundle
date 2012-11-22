@@ -11,11 +11,6 @@ Features :
 +   Stand alone handler as service for filesystem operations
 
 
-State
------
-
-This bundle is production ready if you deal only with a local filesystem (on the same server). There are some points to improve, you can check the todo. Gaufrette will come really soon.
-
 Documentation
 -------------
 
@@ -24,13 +19,13 @@ Documentation
 +   [Templating](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/3-templating.md)
 +   [Deleting Media](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/4-deleting-media.md)
 +   [Custom and/or stand alone handlers](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/5-custom-stand-alone-handlers.md)
++   [Gaufrette handler](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/6-gaufrette-handler.md)
 
 To do
 -----
 
-+   Gaufrette implementation
++   Multiple formats abstraction for a given media
 +   Ajax upload form type
-+   Cache warmer
 +   Real namer tool
 +   Full abstraction of file deletion
 

@@ -32,13 +32,21 @@ class HandlerFactory
     */
     public function getHandler($identifier)
     {
-        $handler = $this->container->get($identifier);
-
+        if(substr($identifier, '0', '15') == 'vlabs_gaufrette') {
+            $handler = $this->container->get('vlabs_media.handler.gaufrette');
+            $filesystem = $this->container->get('knp_gaufrette.filesystem_map')->get($identifier);
+            $handler->setFileSystem($filesystem);
+            
+            return $handler;
+        } else {
+            $handler = $this->container->get($identifier);
+        }
+        
         if ($handler instanceof MediaHandlerInterface) {
             return $handler;
+        } else {
+            throw new \Exception(get_class($handler). ' must implements Vlabs\MediaBundle\BaseFileInterface');
         }
-
-        throw new \Exception(get_class($handler). 'must implements Vlabs\MediaBundle\BaseFileInterface');
     }
 
 }

@@ -4,18 +4,16 @@ namespace Vlabs\MediaBundle\Tests;
 
 use Vlabs\MediaBundle\Entity\BaseFile as VlabsFile;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vlabs\MediaBundle\Annotation\Vlabs;
 
 /**
  * Vlabs\MediaBundle\Tests\DummyFile
  */
-class DummyFile extends VlabsFile
+class DummyFileWithoutCdn extends VlabsFile
 {
     /**
      * @var string $path
      *
      * @Assert\Image()
-     * @Vlabs\Cdn(base_url="dummy_host")
      */
     private $path;
 

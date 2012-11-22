@@ -11,7 +11,7 @@
 
 namespace Vlabs\MediaBundle\Tools;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Vlabs\MediaBundle\Entity\BaseFileInterface;
 
 /**
  * @author Valentin Ferriere <valentin.ferriere@gmail.com>
@@ -21,7 +21,7 @@ interface NamerInterface
     /**
      * Rename a file
      *
-     * @param \Symfony\Component\HttpFoundation\File\File $file
+     * @param BaseFileInterface $file
      */
-    public function rename(File $file);
+    public function rename(BaseFileInterface $file);
 }

@@ -26,7 +26,7 @@ class BaseFileListenerTest extends FormIntegrationTestCase
         $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->builder = new FormBuilder(null, null, $dispatcher, $this->factory);
 
-        $this->form = $this->factory->create('vlabs_file');
+        $this->form = $this->factory->create('vlabs_file', null, array('add_del' => true, 'del_label' => 'Delete'));
         $this->form->setParent($this->getFormMock());
     }
 
@@ -54,13 +54,7 @@ class BaseFileListenerTest extends FormIntegrationTestCase
             ->method('getDataClass')
             ->will($this->returnValue('Vlabs\MediaBundle\Tests\DummyEntity'))
         ;
-
-        $mock
-            ->expects($this->any())
-            ->method('getOption(\'add_del\'')
-            ->will($this->returnValue(true))
-        ;
-
+        
         return $mock;
     }
 

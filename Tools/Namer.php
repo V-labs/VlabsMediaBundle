@@ -11,7 +11,7 @@
 
 namespace Vlabs\MediaBundle\Tools;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Tools\ExtensionGuesser;
 
 /**
@@ -22,11 +22,11 @@ class Namer implements NamerInterface
     /**
      * {@inheritdoc}
      */
-    public function rename(File $file)
+    public function rename(BaseFileInterface $file)
     {
         return sprintf('%s.%s',
             uniqid(),
-            ExtensionGuesser::guess($file->getMimeType())
+            ExtensionGuesser::guess($file->getContentType())
         );
     }
 }
