@@ -61,7 +61,8 @@ class FileType extends AbstractType
         $resolver->setDefaults(array(
             'compound' => false,
             'add_del' => false,
-            'del_label' => null
+            'del_label' => null,
+            'data_class' => null
         ));
     }
 

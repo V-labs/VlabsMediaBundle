@@ -55,7 +55,7 @@ class GaufretteHandlerTest extends \PHPUnit_Framework_TestCase
         $baseFile = $this->getBaseFile();
         $uri = $this->handler->getUri($baseFile);
         
-        $this->assertEquals(sprintf('/%s', $this->basePath), $uri);
+        $this->assertEquals(sprintf('%s', $this->basePath), $uri);
     }
 
     protected function getBaseFile()

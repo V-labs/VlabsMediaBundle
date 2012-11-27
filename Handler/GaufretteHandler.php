@@ -63,7 +63,13 @@ class GaufretteHandler extends AbstractHandler
     public function getUri(BaseFileInterface $baseFile)
     {
         $this->cdn->handle($baseFile);
-        $uri = sprintf('%s/%s', $this->cdn->getBaseUrl(), $baseFile->getPath());
+        $host = $this->cdn->getBaseUrl();
+        
+        if(!empty($host)) {
+            $uri = sprintf('%s/%s', $host, $baseFile->getPath());
+        } else {
+            $uri = sprintf('%s', $baseFile->getPath());
+        }
         
         return $uri;
     }
