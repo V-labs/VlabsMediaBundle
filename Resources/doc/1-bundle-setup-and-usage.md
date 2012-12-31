@@ -155,10 +155,6 @@ To enable your media validation, you must use the @Valid() annotation provided b
 The validator will validate your media according to the constraints of the **Image path** property.
 
 
-Then, you can run the command to create the **vlabs_image** table with all the attributes and foreign key.
-
-    php app/console doctrine:schema:update --force
-
 **3)** Now that your entities are configured, proceed to the bundle configuration.
 
 config.yml
@@ -180,6 +176,10 @@ It will then automatically be called from cache.
 
 You have to specify a path for the cached files.
 Your server must have write permissions on the base media directory (files here).
+
+Then, you can run the command to create the **vlabs_image** table with all the attributes and foreign key.
+
+    php app/console doctrine:schema:update --force
 
 **4)** Last step : form configuration
 
