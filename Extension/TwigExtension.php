@@ -64,7 +64,6 @@ class TwigExtension extends \Twig_Extension
                     $template = $this->templates['form_image'];
                     break;
                 default :
-                    $options['resize'] = null;
                     $template = $this->templates['form_doc'];
                     break;
             }
@@ -82,20 +81,24 @@ class TwigExtension extends \Twig_Extension
         $handler = $this->handlerManager->getHandlerForObject($file);
         $uri = $handler->getUri($file);
 
-        if (isset($options['resize'])) {
-            $formats = $options['resize'];
-
-            if (isset($formats['width']) && isset($formats['height'])) {
-                $this->im->handleImage($uri, $file->getName(), $formats);
-                $path = $this->im->getCachePath();
-                $media = clone $file; //handle same object multiple times with different sizes
-                $media->setPath($path);
-            } else {
-                throw new \Exception('Width & height must be set for resize');
-            }
-        } else {
-            $media = $file;
-            $media->setPath($uri);
+        if (!empty($options))
+        {
+// 			if(!is_array($options))
+// 				throw new \Exception(sprintf('The "%s" filter require an array of options. You provided a %s (%s).',
+// 					$filter,
+// 					gettype($filterOptions),
+// 					(string) $filterOptions
+// 				));
+				
+			$this->im->handleImage($uri, $file->getName(), $options);
+			$path = $this->im->getCachePath();
+			$media = clone $file; // Handle same object multiple times with different sizes
+			$media->setPath($path);
+        }
+        else
+        {
+        	$media = $file;
+        	$media->setPath($uri);
         }
 
         unset($file);

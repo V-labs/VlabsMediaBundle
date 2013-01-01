@@ -31,9 +31,12 @@
         <!-- adapter -->
         <service id="vlabs_media.adapter" class="%vlabs_media.adapter.class%" public="false" />
 
-        <!-- image resizer -->
+        <!-- image manipulator -->
         <service id="vlabs_media.image_manipulator" class="%vlabs_media.image_manipulator.class%" public="false">
             <argument>%vlabs_media.cache_dir%</argument>
+            <call method="setNamer">
+                <argument type="service" id="vlabs_media.namer" />
+            </call>
         </service>
 
         <!-- Handlers -->

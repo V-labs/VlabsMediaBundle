@@ -17,14 +17,15 @@ namespace Vlabs\MediaBundle\Tools;
 interface ImageManipulatorInterface
 {
     /**
-     * Resize the file if needed
-     * Set the cached path for the resized image
+     * Modify the image if needed
+     * Set the cached path for the new image
      *
      * @param string $path
      * @param string $name
-     * @param array  $formats
+     * @param string $filter
+     * @param array  $filterOptions
      */
-    public function handleImage($path, $name, $formats);
+    public function handleImage($path, $name, $filters);
 
     /**
      * Return the cached path for the resized image
