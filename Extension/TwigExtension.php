@@ -50,15 +50,15 @@ class TwigExtension extends \Twig_Extension
 
     public function getPreview($prop, $datas, $options = array())
     {
-        if($datas == null) {
+        if ($datas == null) {
             return;
         }
-        
+
         $getter = 'get'.ucfirst($prop);
         $baseFile = $datas->$getter();
 
         if ($baseFile instanceof BaseFileInterface) {
-            
+
             switch ($baseFile->getContentType()) {
                 case 'image/jpeg': case 'image/png': case 'image/gif':
                     $template = $this->templates['form_image'];
@@ -81,28 +81,18 @@ class TwigExtension extends \Twig_Extension
         $handler = $this->handlerManager->getHandlerForObject($file);
         $uri = $handler->getUri($file);
 
-        if (!empty($options))
-        {
-// 			if(!is_array($options))
-// 				throw new \Exception(sprintf('The "%s" filter require an array of options. You provided a %s (%s).',
-// 					$filter,
-// 					gettype($filterOptions),
-// 					(string) $filterOptions
-// 				));
-				
-			$this->im->handleImage($uri, $file->getName(), $options);
-			$path = $this->im->getCachePath();
-			$media = clone $file; // Handle same object multiple times with different sizes
-			$media->setPath($path);
-        }
-        else
-        {
-        	$media = $file;
-        	$media->setPath($uri);
+        if (!empty($options)) {
+            $this->im->handleImage($uri, $file->getName(), $options);
+            $path = $this->im->getCachePath();
+            $media = clone $file; // Handle same object multiple times with different sizes
+            $media->setPath($path);
+        } else {
+            $media = $file;
+            $media->setPath($uri);
         }
 
         unset($file);
-        
+
         /* @var $template \Twig_TemplateInterface */
         if ($wantedTemplate != null) {
             if (array_key_exists($wantedTemplate, $this->templates)) {

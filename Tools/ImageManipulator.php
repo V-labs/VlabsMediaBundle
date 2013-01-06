@@ -32,142 +32,117 @@ class ImageManipulator implements ImageManipulatorInterface
 
     public function handleImage($path, $name, $filters)
     {
-//     	$lastFilter = array_slice($filters, -1);
-//     	$imageDir = sprintf('%s/%sx%s',
-//     		$this->cacheDir,
-//     		$lastFilter['height'] == null ? 0 : $height,
-//     		$lastFilter['width'] == null ? 0 : $width
-//     	);
+    	$pathinfo = pathinfo($name);
     	
-    	$this->newPath = sprintf('%s/%s-%s',
-    		$this->cacheDir,
-    		md5(serialize($filters)),
-    		$name
-    	);
-    	
-    	if (!is_file($this->newPath))
-    	{
-    		@mkdir(sprintf('%s/', $this->cacheDir));
-//     		@mkdir(sprintf('%s/', $imageDir));
-    	
-    		if(is_file($path))
-    		{
-    			$imagine = new Imagine();
-    			$image =  $imagine->open($path);
-    			
-    			foreach ($filters as $filter => $filterOptions)
-    			{
-    				$height = isset($filterOptions['height']) ? $filterOptions['height'] : null;
-    				$width = isset($filterOptions['width']) ? $filterOptions['width'] : null;
-    				
-    				if ($filter == 'resize')
-    				{
-    					$upscale = isset($filterOptions['upscale']) ? $filterOptions['upscale'] : null;
-    					$keepRatio = isset($filterOptions['keepRatio']) ? $filterOptions['keepRatio'] : null;
-    					
-    					$image = $this->getResizedBox(
-    						$image,
-    						$height,
-    						$width, 
-    						$upscale,
-    						$keepRatio
-    					);
-    				}
-    				else if ($filter == 'crop')
-    				{
-    					$image = $this->getCroppedBox(
-    						$image,
-    						$height,
-    						$width
-    					);
-    				}
-    				else
-    					throw new \Exception(sprintf('The "%s" image filter does not exist', $filter));
-    			}
-    	
-    			$image->save($this->newPath);
-    		}
-    	}
+        $this->newPath = sprintf('%s/%s.%s',
+            $this->cacheDir,
+            md5(serialize($filters)),
+            $pathinfo['extension']
+        );
+
+        if (!is_file($this->newPath)) {
+            @mkdir(sprintf('%s/', $this->cacheDir));
+
+            if (is_file($path)) {
+                $imagine = new Imagine();
+                $image =  $imagine->open($path);
+
+                foreach ($filters as $filter => $filterOptions) {
+                    $height = isset($filterOptions['height']) ? $filterOptions['height'] : null;
+                    $width = isset($filterOptions['width']) ? $filterOptions['width'] : null;
+
+                    if ($filter == 'resize') {
+                        $upscale = isset($filterOptions['upscale']) ? $filterOptions['upscale'] : null;
+                        $keepRatio = isset($filterOptions['keepRatio']) ? $filterOptions['keepRatio'] : null;
+
+                        $image = $this->getResizedBox(
+                            $image,
+                            $height,
+                            $width,
+                            $upscale,
+                            $keepRatio
+                        );
+                    } elseif ($filter == 'crop') {
+                        $image = $this->getCroppedBox(
+                            $image,
+                            $height,
+                            $width
+                        );
+                    } else
+                        throw new \Exception(sprintf('The "%s" image filter does not exist', $filter));
+                }
+
+                $image->save($this->newPath);
+            }
+        }
     }
-    
+
     /**
-     * @param ImageInterface $image
-     * @param integer $height
-     * @param integer $width
+     * Create a resized Box based on an Image and a height and/or a width.
+     * Upscale to true will authorize the box to be bigger than the original image dimensions.
+     * keepRatio false will authorize the box to ignore the image ratio.
+     * 
+     * @param  ImageInterface     $image
+     * @param  integer            $height
+     * @param  integer            $width
      * @throws \Exception
      * @return \Imagine\Image\Box
      */
     protected function getResizedBox(ImageInterface $image, $height = null, $width = null, $upscale = false, $keepRatio = true)
     {
-    	if (!isset($upscale))
-    		$upscale = false;
-    	
-    	if (!isset($keepRatio))
-    		$keepRatio = true;
-    	
-    	if ($height !== null && $width !== null) // Scale by Width & Height
-    	{
-    		$originalWidth = $image->getSize()->getWidth();
-    		$originalHeight = $image->getSize()->getHeight();
-    		
-    		if (!$upscale && ($width > $originalWidth || $height >  $originalHeight))
-    		{
-   				$max = min($originalWidth, $originalHeight);
-   				$width = $max;
-   				$height = $max;
-    		}
-    		
-    		if ($keepRatio)
-	    		if ($width >= $height)
-	    			$box = $image->getSize()->widen($width);
-	    		else
-	    			$box = $image->getSize()->heighten($width);
-	    	else
-	    		return $image->resize(new Box($width, $height));
-    			
-    	}
-    	else if ($height === null && $width !== null) // Scale by Width
-    	{
-    		$box = $image->getSize()->widen($width);
-    	}
-    	else if ($width === null && $height !== null) // Scale by Height
-    	{
-    		$box = $image->getSize()->heighten($height);
-    	}
-    	else
-    		throw new \Exception('The "resize" filter needs at least a "height" or a "width" option to be specified.');
-    	
-    	return $image->thumbnail($box, ImageInterface::THUMBNAIL_OUTBOUND);;
+        if (!isset($upscale))
+            $upscale = false;
+
+        if (!isset($keepRatio))
+            $keepRatio = true;
+
+        if ($height !== null && $width !== null) { // Scale by Width & Height
+            $originalWidth = $image->getSize()->getWidth();
+            $originalHeight = $image->getSize()->getHeight();
+
+            if (!$upscale && ($width > $originalWidth || $height >  $originalHeight)) {
+                   $max = min($originalWidth, $originalHeight);
+                   $width = $max;
+                   $height = $max;
+            }
+
+            if ($keepRatio)
+                if ($width >= $height)
+                    $box = $image->getSize()->widen($width);
+                else
+                    $box = $image->getSize()->heighten($width);
+            else
+                return $image->resize(new Box($width, $height));
+
+        } elseif ($height === null && $width !== null) { // Scale by Width
+            $box = $image->getSize()->widen($width);
+        } elseif ($width === null && $height !== null) { // Scale by Height
+            $box = $image->getSize()->heighten($height);
+        } else
+            throw new \Exception('The "resize" image filter needs at least a "height" or a "width" option to be specified.');
+
+        return $image->thumbnail($box, ImageInterface::THUMBNAIL_OUTBOUND);;
     }
-    
+
     /**
-     * @param ImageInterface $image
-     * @param integer $height
-     * @param integer $width
+     * Create a resized Box, using cropping, based on an Image and a new height and a new width.
+     * 
+     * @param  ImageInterface     $image
+     * @param  integer            $height
+     * @param  integer            $width
      * @throws \Exception
      * @return \Imagine\Image\Box
      */
     protected function getCroppedBox(ImageInterface $image, $height = null, $width = null)
     {
-    	if($height !== null && $width !== null) // Crop-resize by Width & Height
-    	{
-    		$box = new Box($width, $height);
-    	}
-// Useless cases ?
-//         else if($height === null && $width !== null) // Crop Width
-//     	{
-//     		$box = new Box($width, $image->getSize()->getHeight());
-//     	}
-//     	else if($width === null && $height !== null) // Crop Height
-//     	{
-//     		$box = new Box($image->getSize()->getWidth(), $height);
-//     	}
-    	else
-    		throw new \Exception('The "crop" filter needs at least a "height" and a "width" option to be specified.');
-    	
-    	return $image->thumbnail($box, ImageInterface::THUMBNAIL_OUTBOUND);;
+        if ($height !== null && $width !== null) { // Crop-resize by Width & Height
+            $box = new Box($width, $height);
+        }
+            throw new \Exception('The "crop" image filter needs at least a "height" and a "width" option to be specified.');
+
+        return $image->thumbnail($box, ImageInterface::THUMBNAIL_OUTBOUND);;
     }
-    
+
     public function getAllCachedPaths($name)
     {
         $paths = array();
@@ -190,11 +165,11 @@ class ImageManipulator implements ImageManipulatorInterface
 
     public function setNamer(NamerInterface $namer)
     {
-    	$this->namer = $namer;
+        $this->namer = $namer;
     }
-    
+
     public function getNamer()
     {
-    	return $this->namer;
+        return $this->namer;
     }
 }
