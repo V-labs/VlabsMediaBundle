@@ -137,8 +137,9 @@ class ImageManipulator implements ImageManipulatorInterface
     {
         if ($height !== null && $width !== null) { // Crop-resize by Width & Height
             $box = new Box($width, $height);
+        } else {
+        	throw new \Exception('The "crop" image filter needs at least a "height" and a "width" option to be specified.');
         }
-            throw new \Exception('The "crop" image filter needs at least a "height" and a "width" option to be specified.');
 
         return $image->thumbnail($box, ImageInterface::THUMBNAIL_OUTBOUND);;
     }
