@@ -16,6 +16,10 @@
         <parameter key="vlabs_media.type.del_file.class">Vlabs\MediaBundle\Form\Type\DelFileType</parameter>
         <parameter key="vlabs_media.handler.gaufrette.class">Vlabs\MediaBundle\Handler\GaufretteHandler</parameter>
         <parameter key="vlabs_media.annotation.cdn_reader.class">Vlabs\MediaBundle\Annotation\CdnReader</parameter>
+        <parameter key="vlabs_media.filter_chain.class">Vlabs\MediaBundle\Filter\FilterChain</parameter>
+        <parameter key="vlabs_media.filter.abstract_filter.class">Vlabs\MediaBundle\Filter\AbstractFilter</parameter>
+        <parameter key="vlabs_media.filter.crop.class">Vlabs\MediaBundle\Filter\ImageCropFilter</parameter>
+        <parameter key="vlabs_media.filter.resize.class">Vlabs\MediaBundle\Filter\ImageResizeFilter</parameter>
     </parameters>
 
     <services>
@@ -31,12 +35,16 @@
         <!-- adapter -->
         <service id="vlabs_media.adapter" class="%vlabs_media.adapter.class%" public="false" />
 
-        <!-- image manipulator -->
-        <service id="vlabs_media.image_manipulator" class="%vlabs_media.image_manipulator.class%" public="false">
+        <!-- filters-->
+        <service id="vlabs_media.filter_chain" class="%vlabs_media.filter_chain.class%" />
+        <service id="vlabs_media.filter.abstract_filter" class="%vlabs_media.filter.abstract_filter.class%" abstract="true">
             <argument>%vlabs_media.cache_dir%</argument>
-            <call method="setNamer">
-                <argument type="service" id="vlabs_media.namer" />
-            </call>
+        </service>
+        <service id="vlabs_media.filter.crop" class="%vlabs_media.filter.crop.class%" parent="vlabs_media.filter.abstract_filter">
+            <tag name="vlabs_media.filter" alias="crop" />
+        </service>
+        <service id="vlabs_media.filter.resize" class="%vlabs_media.filter.resize.class%" parent="vlabs_media.filter.abstract_filter">
+            <tag name="vlabs_media.filter" alias="resize" />
         </service>
 
         <!-- Handlers -->
@@ -75,13 +83,13 @@
         <!-- listeners -->
         <service id="vlabs_media.listener.uploader" class="%vlabs_media.listener.uploader.class%" public="false">
             <argument type="service" id="vlabs_media.handler.manager" />
-            <argument type="service" id="vlabs_media.image_manipulator" />
+            <argument type="service" id="vlabs_media.filter_chain" />
         </service>
 
         <!-- twig -->
         <service id="vlabs_media_twig_extension" class="%vlabs_media_twig_extension.class%" public="false">
             <argument type="service" id="vlabs_media.handler.manager" />
-            <argument type="service" id="vlabs_media.image_manipulator" />
+            <argument type="service" id="vlabs_media.filter_chain" />
             <argument>%vlabs_media.templates%</argument>
             <tag name="twig.extension" />
         </service>

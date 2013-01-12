@@ -16,7 +16,7 @@ use Vlabs\MediaBundle\Entity\BaseFile;
 use Vlabs\MediaBundle\Tools\NamerInterface;
 
 /**
- * Handle media creation and mantory properties & service
+ * Handle media creation and mandatory properties & service
  *
  * @author Valentin Ferriere <valentin.ferriere@gmail.com>
  */

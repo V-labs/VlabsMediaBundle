@@ -12,7 +12,16 @@
 namespace Vlabs\MediaBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use Vlabs\MediaBundle\DependencyInjection\Compiler\VlabsFilterPass;
 
 class VlabsMediaBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new VlabsFilterPass());
+    }
 }

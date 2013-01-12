@@ -1,4 +1,14 @@
 {% block vlabs_file_widget %}
     {{ form_widget(form) }}
-    {{ formPreview(form.vars.name, form.parent.vars.data, { resize : { 'width' : 90 , 'height' : 90 } }) }}
+
+    {% set file = getBaseFile(form.vars.name, form.parent.vars.data) %}
+
+    {% if file is not null %}
+        {% if file.contentType in ['image/jpeg', 'image/png', 'image/gif'] %}
+            {{ file|vlabs_filter('resize', {'width': 90, 'height': 90 })|vlabs_media('image') }}
+        {% else %}
+            {{ file|vlabs_media('form_doc') }}
+        {% endif %}
+    {% endif %}
+
 {% endblock %}

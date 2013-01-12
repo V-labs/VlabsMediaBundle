@@ -13,7 +13,8 @@ namespace Vlabs\MediaBundle\Extension;
 
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Handler\HandlerManager;
-use Vlabs\MediaBundle\Tools\ImageManipulatorInterface;
+use Vlabs\MediaBundle\Filter\FilterChain;
+use Vlabs\MediaBundle\Filter\FilterInterface;
 
 /**
  * Twig functions for displaying medias
@@ -25,13 +26,13 @@ class TwigExtension extends \Twig_Extension
     /* @var \Twig_Environment */
     protected $environment;
     protected $handlerManager;
-    protected $im;
+    protected $filterChain;
     protected $templates = array();
 
-    public function __construct(HandlerManager $handlerManager, ImageManipulatorInterface $im, $templates = array())
+    public function __construct(HandlerManager $handlerManager, FilterChain $filterChain, $templates = array())
     {
         $this->handlerManager = $handlerManager;
-        $this->im = $im;
+        $this->filterChain = $filterChain;
         $this->templates = $templates;
     }
 
@@ -43,68 +44,61 @@ class TwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'media' => new \Twig_Function_Method($this, 'getMedia'),
-            'formPreview' => new \Twig_Function_Method($this, 'getPreview'),
+            'getBaseFile' => new \Twig_Function_Method($this, 'getBaseFile')
         );
     }
 
-    public function getPreview($prop, $datas, $options = array())
+    public function getFilters()
+    {
+        return array(
+            'vlabs_filter' => new \Twig_Filter_Method($this, 'filter'),
+            'vlabs_media' => new \Twig_Filter_Method($this, 'displayTemplate')
+        );
+    }
+
+    public function filter(BaseFileInterface $file, $filterAlias, array $options = array())
+    {
+        $filter = $this->filterChain->getFilter($filterAlias);
+        $handler = $this->handlerManager->getHandlerForObject($file);
+
+        if($filter instanceof FilterInterface) {
+            $filter->handle($file, $handler->getUri($file), $options);
+
+            $media = clone $file; //handle same file with multiple filters on same page
+            $media->setPath($filter->getCachePath());
+        } else {
+            $media = $file;
+            $media->setPath($handler->getUri($file));
+        }
+
+        return $media;
+    }
+
+    public function displayTemplate(BaseFileInterface $file, $templateAlias, array $options = array())
+    {
+        /* @var $template \Twig_TemplateInterface */
+        if ($templateAlias != null) {
+            if (array_key_exists($templateAlias, $this->templates)) {
+                $templateAlias = $this->templates[$templateAlias];
+            }
+
+            $template = $this->environment->loadTemplate($templateAlias);
+        } else {
+            $template = $this->environment->loadTemplate($this->templates['default']);
+        }
+
+        return $template->display(array('media' => $file, 'options' => $options));
+    }
+
+    public function getBaseFile($prop, $datas)
     {
         if ($datas == null) {
             return;
         }
 
         $getter = 'get'.ucfirst($prop);
-        $baseFile = $datas->$getter();
 
-        if ($baseFile instanceof BaseFileInterface) {
-
-            switch ($baseFile->getContentType()) {
-                case 'image/jpeg': case 'image/png': case 'image/gif':
-                    $template = $this->templates['form_image'];
-                    break;
-                default :
-                    $template = $this->templates['form_doc'];
-                    break;
-            }
-
-            return $this->getMedia($baseFile, $template, $options);
-        }
-    }
-
-    public function getMedia(BaseFileInterface $file = null, $wantedTemplate = null, $options = array())
-    {
-        if ($file == null) {
-            return;
-        }
-
-        $handler = $this->handlerManager->getHandlerForObject($file);
-        $uri = $handler->getUri($file);
-
-        if (!empty($options)) {
-            $this->im->handleImage($uri, $file->getName(), $options);
-            $path = $this->im->getCachePath();
-            $media = clone $file; // Handle same object multiple times with different sizes
-            $media->setPath($path);
-        } else {
-            $media = $file;
-            $media->setPath($uri);
-        }
-
-        unset($file);
-
-        /* @var $template \Twig_TemplateInterface */
-        if ($wantedTemplate != null) {
-            if (array_key_exists($wantedTemplate, $this->templates)) {
-                $wantedTemplate = $this->templates[$wantedTemplate];
-            }
-
-            $template = $this->environment->loadTemplate($wantedTemplate);
-        } else {
-            $template = $this->environment->loadTemplate($this->templates['default']);
-        }
-
-        return $template->display(array('media' => $media, 'options' => $options));
+        return $datas->$getter();
     }
 
     public function getName()

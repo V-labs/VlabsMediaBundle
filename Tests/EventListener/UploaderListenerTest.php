@@ -8,13 +8,13 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
 {
     protected $adapter;
     protected $handlerManager;
-    protected $imageManipulator;
+    protected $filterChain;
 
     public function setUp()
     {
         $this->adapter = $this->getAdapterMock();
         $this->handlerManager = $this->getHandlerManagerMock();
-        $this->imageManipulator = $this->getImageManipulatorMock();
+        $this->filterChain = $this->getFilterChainMock();
     }
 
     protected function getAdapterMock()
@@ -101,11 +101,26 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
-    public function getImageManipulatorMock()
+    public function getFilterChainMock()
     {
-        $mock = $this->getMockBuilder('Vlabs\MediaBundle\Tools\ImageManipulatorInterface')
+        $mock = $this->getMockBuilder('Vlabs\MediaBundle\Filter\FilterChain')
                ->disableOriginalConstructor()
                ->getMock();
+
+        $mock
+            ->expects($this->any())
+            ->method('getFilter')
+            ->will($this->returnValue($this->getFilterMock()))
+        ;
+
+        return $mock;
+    }
+
+    public function getFilterMock()
+    {
+        $mock = $this->getMockBuilder('Vlabs\MediaBundle\Filter\FilterInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $mock
             ->expects($this->any())
@@ -119,13 +134,13 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $this->handlerManager = null;
-        $this->imageManipulator = null;
+        $this->filterChain = null;
         $this->adapter = null;
     }
 
     public function testGetSubscribedEvents()
     {
-        $listener = new UploaderListener($this->handlerManager, $this->imageManipulator);
+        $listener = new UploaderListener($this->handlerManager, $this->filterChain);
         $events = $listener->getSubscribedEvents();
 
         $this->assertTrue(in_array('prePersist', $events));
@@ -139,7 +154,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
 
-        $listener = new UploaderListener($this->handlerManager, $this->imageManipulator);
+        $listener = new UploaderListener($this->handlerManager, $this->filterChain);
         $listener->prePersist($args);
     }
 
@@ -149,7 +164,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
 
-        $listener = new UploaderListener($this->handlerManager, $this->imageManipulator);
+        $listener = new UploaderListener($this->handlerManager, $this->filterChain);
         $listener->preRemove($args);
     }
 
@@ -159,7 +174,7 @@ class UploaderListenerTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
 
-        $listener = new UploaderListener($this->handlerManager, $this->imageManipulator);
+        $listener = new UploaderListener($this->handlerManager, $this->filterChain);
         $listener->preRemove($args);
         $listener->postRemove($args);
     }

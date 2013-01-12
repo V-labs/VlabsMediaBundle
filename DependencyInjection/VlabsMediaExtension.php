@@ -47,7 +47,6 @@ class VlabsMediaExtension extends Extension
         $loader->load('services.xml');
 
         $container->setParameter('vlabs_media.cache_dir', $config['image_cache']['cache_dir']);
-        $container->setParameter('vlabs_media.image_manipulator.class', $config['image_cache']['image_manipulator']);
 
         $container->setParameter('vlabs_media.adapter.class', $this->adapterMap[$config['driver']]);
 

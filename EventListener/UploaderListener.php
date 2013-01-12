@@ -15,7 +15,7 @@ use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
 use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
-use Vlabs\MediaBundle\Tools\ImageManipulatorInterface;
+use Vlabs\MediaBundle\Filter\FilterChain;
 
 /**
  * Handle file system operation
@@ -26,13 +26,13 @@ use Vlabs\MediaBundle\Tools\ImageManipulatorInterface;
 class UploaderListener implements EventSubscriber
 {
     private $handlerManager;
-    private $im;
+    private $filterChain;
     private $toRemove = array();
 
-    public function __construct(HandlerManager $handlerManager, ImageManipulatorInterface $im = null)
+    public function __construct(HandlerManager $handlerManager, FilterChain $filterChain)
     {
         $this->handlerManager = $handlerManager;
-        $this->im = $im;
+        $this->filterChain = $filterChain;
     }
 
     /**
@@ -81,7 +81,9 @@ class UploaderListener implements EventSubscriber
             $handler = $this->handlerManager->getHandlerForObject($entity);
             $this->toRemove[get_class($handler)][] = $handler->getUri($entity);
 
-            $cachedPaths = $this->im->getAllCachedPaths($entity->getName());
+            // here we can take any filters, we just need the cache path
+            $filter = $this->filterChain->getFilter('resize');
+            $cachedPaths = $filter->getAllCachedPaths($entity->getName());
             $this->toRemove[get_class($handler)] = array_merge($this->toRemove[get_class($handler)], $cachedPaths);
         }
     }

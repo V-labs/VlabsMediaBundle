@@ -48,7 +48,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('image_cache')
                     ->children()
                         ->scalarNode('cache_dir')->isRequired()->end()
-                        ->scalarNode('image_manipulator')->defaultValue('Vlabs\MediaBundle\Tools\ImageManipulator')->end()
                     ->end()
                 ->end()
             ->end()

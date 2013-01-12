@@ -32,7 +32,7 @@ class BaseFileListenerTest extends FormIntegrationTestCase
 
     protected function getFormMock()
     {
-        $mock = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $mock = $this->getMock('Symfony\Component\Form\Tests\FormInterface');
 
         $mock
             ->expects($this->any())
