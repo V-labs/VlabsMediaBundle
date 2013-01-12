@@ -34,14 +34,15 @@ class ImageManipulator implements ImageManipulatorInterface
     {
     	$pathinfo = pathinfo($name);
     	
-        $this->newPath = sprintf('%s/%s.%s',
+        $this->newPath = sprintf('%s/%s/%s',
             $this->cacheDir,
             md5(serialize($filters)),
-            $pathinfo['extension']
+            $name
         );
 
         if (!is_file($this->newPath)) {
-            @mkdir(sprintf('%s/', $this->cacheDir));
+            @mkdir(sprintf('%s', $this->cacheDir));
+            @mkdir(sprintf('%s/%s', $this->cacheDir, md5(serialize($filters))));
 
             if (is_file($path)) {
                 $imagine = new Imagine();
