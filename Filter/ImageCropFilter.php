@@ -23,6 +23,11 @@ use Imagine\Gd\Imagine;
  */
 class ImageCropFilter extends AbstractFilter
 {
+    /**
+     * {@inheritDoc}
+     *
+     * Crop an image according to width & height
+     */
     protected function doFilter(BaseFileInterface $file, $baseUri, $options)
     {
         if (is_file($baseUri)) {

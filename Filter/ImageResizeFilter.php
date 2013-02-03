@@ -23,6 +23,12 @@ use Imagine\Gd\Imagine;
  */
 class ImageResizeFilter extends AbstractFilter
 {
+    /**
+     * {@inheritDoc}
+     *
+     * Resize an image according to width and/or height.
+     * upscale & keepRatio can also be used.
+     */
     protected function doFilter(BaseFileInterface $file, $baseUri, $options)
     {
         if (is_file($baseUri)) {

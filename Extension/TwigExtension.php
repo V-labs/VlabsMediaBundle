@@ -56,6 +56,14 @@ class TwigExtension extends \Twig_Extension
         );
     }
 
+    /**
+     * Apply the wanted filter and return the media filtered
+     *
+     * @param \Vlabs\MediaBundle\Entity\BaseFileInterface $file
+     * @param string $filterAlias
+     * @param array $options
+     * @return \Vlabs\MediaBundle\Entity\BaseFileInterface
+     */
     public function filter(BaseFileInterface $file, $filterAlias, array $options = array())
     {
         $filter = $this->filterChain->getFilter($filterAlias);
@@ -74,6 +82,15 @@ class TwigExtension extends \Twig_Extension
         return $media;
     }
 
+    /**
+     * Display a template according to its identifier
+     * Pass media & options
+     *
+     * @param \Vlabs\MediaBundle\Entity\BaseFileInterface $file
+     * @param string $templateAlias
+     * @param array $options
+     * @return mixed
+     */
     public function displayTemplate(BaseFileInterface $file, $templateAlias, array $options = array())
     {
         /* @var $template \Twig_TemplateInterface */

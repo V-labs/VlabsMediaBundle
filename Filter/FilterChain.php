@@ -14,6 +14,8 @@ namespace Vlabs\MediaBundle\Filter;
 use Vlabs\MediaBundle\Filter\FilterInterface;
 
 /**
+ * Filter manager. Store & retrieve all tagged services
+ *
  * @author Valentin Ferriere <valentin.ferriere@gmail.com>
  */
 class FilterChain

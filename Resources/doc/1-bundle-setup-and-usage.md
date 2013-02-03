@@ -13,7 +13,7 @@ composer.json
 
     {
         require: {
-            "vlabs/media-bundle": "dev-master"
+            "vlabs/media-bundle": "v1.1"
         }
     }
 
@@ -201,12 +201,12 @@ ArticleType.php
 
 The bundle provided a twig method that you can call from any template :
 
-    {{ media(article.image) }} // will return the path on the filesystem
+    {{ article.image|vlabs_media('default') }} // will return the path on the filesystem
 
 For all images, if you want to resize, you can use :
     
-    // return the cached path for resized image
-    {{ media(article.image, null, { resize : { 'width' : 300, 'height' : 300 } } ) }} 
+    // return the img tag for resized image
+    {{ article.image|vlabs_filter('resize', { 'width' : 300, 'height' : 300 })|vlabs_media('image') }}
 
 
 Documentation
@@ -217,4 +217,5 @@ Documentation
 +   [Templating](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/3-templating.md)
 +   [Deleting Media](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/4-deleting-media.md)
 +   [Custom and/or stand alone handlers](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/5-custom-stand-alone-handlers.md)
-+   [Gaufrette handler](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/6-gaufrette-handler.md)
++   [Custom filters](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/6-custom-stand-alone-handlers.md)
++   [Gaufrette handler](https://github.com/V-labs/VlabsMediaBundle/blob/master/Resources/doc/7-gaufrette-handler.md)

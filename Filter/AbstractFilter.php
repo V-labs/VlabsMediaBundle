@@ -15,6 +15,8 @@ use Symfony\Component\Finder\Finder;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
 
 /**
+ * Handle directory creation & file storing / retrieval
+ *
  * @author Valentin Ferriere <valentin.ferriere@gmail.com>
  */
 abstract class AbstractFilter implements FilterInterface
@@ -28,6 +30,9 @@ abstract class AbstractFilter implements FilterInterface
         $this->cacheDir = $cacheDir;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function handle(BaseFileInterface $file, $baseUri, array $options)
     {
         $dir = sprintf('%s/%s/%s', $this->cacheDir, $this->getAlias(), md5(serialize($options)));
@@ -42,6 +47,9 @@ abstract class AbstractFilter implements FilterInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getAllCachedPaths($name)
     {
         $paths = array();
@@ -57,20 +65,38 @@ abstract class AbstractFilter implements FilterInterface
         return $paths;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCachePath()
     {
         return $this->newPath;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setAlias($alias)
     {
         $this->alias = $alias;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getAlias()
     {
         return $this->alias;
     }
 
+    /**
+     * This method must be overrided in child classes in order to apply the filtering operation
+     *
+     * @param \Vlabs\MediaBundle\Entity\BaseFileInterface $file
+     * @param string $baseUri
+     * @param array $options
+     *
+     * @return mixed
+     */
     abstract protected function doFilter(BaseFileInterface $file, $baseUri, $options);
 }
