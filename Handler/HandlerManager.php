@@ -63,6 +63,11 @@ class HandlerManager
     public function getHandlerForClass($fileClass, $classList)
     {
         $metadatas = $this->mediaReader->getMetaDatas();
+
+        if(empty($metadatas)) {
+            return;
+        }
+
         $class = '';
         $property = '';
 

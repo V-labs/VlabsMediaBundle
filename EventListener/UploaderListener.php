@@ -16,6 +16,7 @@ use Doctrine\Common\EventSubscriber;
 use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Filter\FilterChain;
+use Vlabs\MediaBundle\Handler\MediaHandlerInterface;
 
 /**
  * Handle file system operation
@@ -63,8 +64,10 @@ class UploaderListener implements EventSubscriber
                 $this->handlerManager->getAdapter()->getClass($entity),
                 array_keys($this->handlerManager->getAdapter()->getLoadedMetaDatas($args))
             );
-
-            $handler->move($entity);
+            
+            if($handler instanceof MediaHandlerInterface) {
+                $handler->move($entity);
+            }
         }
     }
 
