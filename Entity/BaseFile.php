@@ -56,6 +56,11 @@ abstract class BaseFile implements BaseFileInterface
      */
     private $contentType;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
     /**
      * Get id
      *
