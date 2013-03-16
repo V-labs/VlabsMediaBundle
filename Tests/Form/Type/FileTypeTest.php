@@ -73,7 +73,7 @@ class FileTypeTest extends BaseFileTypeTest
 
     protected function getFormMock()
     {
-        $mock = $this->getMock('Symfony\Component\Form\Tests\FormInterface');
+        $mock = $this->getMock('Symfony\Component\Form\Test\FormInterface');
 
         $mock
             ->expects($this->any())
