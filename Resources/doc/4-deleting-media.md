@@ -18,7 +18,7 @@ This part needs to be improved, actually the removal is not done automatically. 
 For example, if your form is called `image`, you must call the following code to permanently delete the media :
 
     if ($form->isValid()) {
-        if($form->has('del-image') && $form->get('del-image')->getData() == true) {
+        if($form->has('delImage') && $form->get('delImage')->getData() == true) {
             $entity->setImage(null);
         }
         
@@ -28,7 +28,7 @@ For example, if your form is called `image`, you must call the following code to
         return $this->redirect($this->generateUrl('foo'));
     }
     
-The del file name will always be **del-field_name**
+The del file name will always be **delFieldName**
 
 Note that if it's an image, it will also be removed from cache.
 
