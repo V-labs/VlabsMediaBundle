@@ -11,6 +11,7 @@
 
 namespace Vlabs\MediaBundle\Extension;
 
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Filter\FilterChain;
@@ -113,9 +114,8 @@ class TwigExtension extends \Twig_Extension
             return;
         }
 
-        $getter = 'get'.ucfirst($prop);
-
-        return $datas->$getter();
+        $propertyAccessor = new PropertyAccessor();
+        return $propertyAccessor->getValue($datas, $prop);
     }
 
     public function getName()
