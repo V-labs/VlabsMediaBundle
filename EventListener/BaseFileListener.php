@@ -88,7 +88,7 @@ class BaseFileListener implements EventSubscriberInterface
         if ($event->getData() instanceof UploadedFile) {
             $handler = $this->handlerManager->getHandler(
                 $form->getParent()->getConfig()->getDataClass(),
-                $form->getName()
+                (string) $form->getPropertyPath()
             );
 
             $datas = $handler->create($event->getData());

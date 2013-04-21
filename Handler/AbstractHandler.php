@@ -36,11 +36,11 @@ abstract class AbstractHandler implements MediaHandlerInterface
 
         $baseFile->setPath($file->getPathname());
         $baseFile->setName($file->getClientOriginalName());
+        $baseFile->setContentType($file->getMimeType());
 
         if ($baseFile instanceof BaseFile) {
             $baseFile->setCreatedAt(new \DateTime());
             $baseFile->setSize($file->getSize());
-            $baseFile->setContentType($file->getMimeType());
         }
 
         return $baseFile;
