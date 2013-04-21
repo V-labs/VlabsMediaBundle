@@ -12,8 +12,8 @@
 namespace Vlabs\MediaBundle\Handler;
 
 use Symfony\Component\HttpFoundation\File\File;
-use Vlabs\MediaBundle\Entity\BaseFile;
 use Vlabs\MediaBundle\Tools\NamerInterface;
+use Vlabs\MediaBundle\Entity\BaseFileInterface;
 
 /**
  * Handle media creation and mandatory properties & service
@@ -37,7 +37,7 @@ abstract class AbstractHandler implements MediaHandlerInterface
         $baseFile->setPath($file->getPathname());
         $baseFile->setName($file->getClientOriginalName());
 
-        if ($baseFile instanceof BaseFile) {
+        if ($baseFile implements BaseFileInterface) {
             $baseFile->setCreatedAt(new \DateTime());
             $baseFile->setSize($file->getSize());
             $baseFile->setContentType($file->getMimeType());
