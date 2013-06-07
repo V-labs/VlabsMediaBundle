@@ -54,7 +54,7 @@ class BaseFileListenerTest extends FormIntegrationTestCase
             ->method('getDataClass')
             ->will($this->returnValue('Vlabs\MediaBundle\Tests\DummyEntity'))
         ;
-        
+
         return $mock;
     }
 
@@ -151,9 +151,9 @@ class BaseFileListenerTest extends FormIntegrationTestCase
         $events = $listener->getSubscribedEvents();
 
         $this->assertTrue(array_key_exists(FormEvents::PRE_SET_DATA, $events));
-        $this->assertTrue(array_key_exists(FormEvents::BIND, $events));
+        $this->assertTrue(array_key_exists(FormEvents::SUBMIT, $events));
         $this->assertEquals($events[FormEvents::PRE_SET_DATA], 'preSetData');
-        $this->assertEquals($events[FormEvents::BIND], 'bind');
+        $this->assertEquals($events[FormEvents::SUBMIT], 'submit');
     }
 
     public function testPreSetData()
@@ -167,7 +167,7 @@ class BaseFileListenerTest extends FormIntegrationTestCase
         $listener->preSetData($event);
     }
 
-    public function testBindHandleSameFile()
+    public function testSubmitHandleSameFile()
     {
         $data = '';
         $form = $this->getFormWithData();
@@ -175,12 +175,12 @@ class BaseFileListenerTest extends FormIntegrationTestCase
         $event = new FormEvent($form, $data);
 
         $listener = new BaseFileListener($this->handlerManager, $this->getFormFactoryMock());
-        $listener->bind($event);
+        $listener->submit($event);
 
         $this->assertInstanceOf('Vlabs\MediaBundle\Entity\BaseFileInterface', $event->getData());
     }
 
-    public function testBindHandleNewFileWithNonEmptyField()
+    public function testSubmitHandleNewFileWithNonEmptyField()
     {
         $data = $file = new UploadedFile(
             __DIR__.'/../Fixtures/test.gif',
@@ -194,19 +194,19 @@ class BaseFileListenerTest extends FormIntegrationTestCase
         $event = new FormEvent($form, $data);
 
         $listener = new BaseFileListener($this->handlerManager, $this->getFormFactoryMock());
-        $listener->bind($event);
+        $listener->submit($event);
 
         $this->assertInstanceOf('Vlabs\MediaBundle\Entity\BaseFileInterface', $event->getData());
         $this->assertNotEquals($event->getData(), $form->getNormData());
     }
 
-    public function testNullDatasOnBind()
+    public function testNullDatasOnSubmit()
     {
         $data = '';
         $event = new FormEvent($this->form, $data);
 
         $listener = new BaseFileListener($this->handlerManager, $this->getFormFactoryMock());
-        $listener->bind($event);
+        $listener->submit($event);
 
         $this->assertNull($event->getData());
     }

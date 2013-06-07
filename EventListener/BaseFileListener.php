@@ -12,7 +12,7 @@
 namespace Vlabs\MediaBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -47,16 +47,16 @@ class BaseFileListener implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::BIND => 'bind'
+            FormEvents::SUBMIT => 'submit'
         );
     }
 
     /**
      * Add checkbox type if needed
      *
-     * @param \Symfony\Component\Form\Event\DataEvent $event
+     * @param \Symfony\Component\Form\FormEvent $event
      */
-    public function preSetData(DataEvent $event)
+    public function preSetData(FormEvent $event)
     {
         $data = $event->getData();
 
@@ -75,9 +75,9 @@ class BaseFileListener implements EventSubscriberInterface
     /**
      * Field logic : set actual object in form or handle new file creation
      *
-     * @param \Symfony\Component\Form\Event\DataEvent $event
+     * @param \Symfony\Component\Form\FormEvent $event
      */
-    public function bind(DataEvent $event)
+    public function submit(FormEvent $event)
     {
         $form = $event->getForm();
 
