@@ -4,6 +4,7 @@
     "description": "Form, database and filesystem abstraction for files",
     "keywords": ["files", "upload", "media"],
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Valentin Ferriere",
@@ -17,7 +18,7 @@
         "symfony/validator": ">=2.1",
         "imagine/Imagine": "<=0.4.1",
         "doctrine/orm": "*",
-        "knplabs/knp-gaufrette-bundle": "dev-master",
+        "knplabs/knp-gaufrette-bundle": "0.2.*@dev",
         "symfony/finder": ">=2.1"
     },
     
