@@ -4,7 +4,6 @@
     "description": "Form, database and filesystem abstraction for files",
     "keywords": ["files", "upload", "media"],
     "license": "MIT",
-    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Valentin Ferriere",
