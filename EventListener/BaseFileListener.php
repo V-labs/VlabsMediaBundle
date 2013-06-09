@@ -66,7 +66,10 @@ class BaseFileListener implements EventSubscriberInterface
 
             if ($addDelBox) {
                 $delLabel = $form->getConfig()->getOption('del_label');
-                $delBox = $this->factory->createNamed('del' . ucfirst($form->getName()), new DelFileType($delLabel));
+                $delBox = $this->factory->createNamed('del' . ucfirst($form->getName()), new DelFileType($delLabel), null, array(
+                    'auto_initialize' => false
+                    )
+                );
                 $form->getParent()->add($delBox);
             }
         }
