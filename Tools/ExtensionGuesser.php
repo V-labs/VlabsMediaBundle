@@ -332,6 +332,7 @@ class ExtensionGuesser {
         'image/pjpeg' => 'jpg',
         'image/png' => 'png',
         'image/targa' => 'tga',
+        'image/svg+xml' => 'svg',
         'image/tiff' => 'tif',
         'image/vn-svf' => 'svf',
         'image/vnd.dgn' => 'dgn',
