@@ -113,7 +113,13 @@ class TwigExtension extends \Twig_Extension
             return;
         }
 
-        $getter = 'get'.ucfirst($prop);
+	// construct getter from property name.
+	// if the property uses underscores each part will be camelized
+	// otherwise there's only 1 part, which will also be camelized
+	$getter = "get";
+	foreach (explode("_", $prop) as $part) {
+		$getter .= ucfirst($part);
+	}
 
         return $datas->$getter();
     }
