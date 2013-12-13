@@ -13,6 +13,7 @@ namespace Vlabs\MediaBundle\EventListener;
 
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
+use Vlabs\MediaBundle\Filter\AbstractFilter;
 use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Filter\FilterChain;
@@ -81,13 +82,19 @@ class UploaderListener implements EventSubscriber
         $entity = $this->handlerManager->getAdapter()->getObject($args);
 
         if ($entity instanceof BaseFileInterface) {
-            $handler = $this->handlerManager->getHandlerForObject($entity);
-            $this->toRemove[get_class($handler)][] = $handler->getUri($entity);
+            $identity = spl_object_hash($entity);
+            $identityCache = sprintf("%s_cache", $identity);
 
+            $handler = $this->handlerManager->getHandlerForObject($entity);
+            $this->toRemove[get_class($handler)][$identity] = $handler->getUri($entity);
+            if(!array_key_exists($identityCache, $this->toRemove[get_class($handler)])) {
+                $this->toRemove[get_class($handler)][$identityCache] = [];
+            }
             // here we can take any filters, we just need the cache path
+            /** @var $filter AbstractFilter */
             $filter = $this->filterChain->getFilter('resize');
             $cachedPaths = $filter->getAllCachedPaths($entity->getName());
-            $this->toRemove[get_class($handler)] = array_merge($this->toRemove[get_class($handler)], $cachedPaths);
+            $this->toRemove[get_class($handler)][$identityCache] = array_merge($this->toRemove[get_class($handler)][$identityCache], $cachedPaths);
         }
     }
 
@@ -101,13 +108,18 @@ class UploaderListener implements EventSubscriber
         $entity = $this->handlerManager->getAdapter()->getObject($args);
         
         if ($entity instanceof BaseFileInterface) {
+            $identity = spl_object_hash($entity);
+            $identityCache = sprintf("%s_cache", $identity);
+
             $handler = $this->handlerManager->getHandlerForDelete(
                     $this->handlerManager->getAdapter()->getClass($entity)
                 );
             
             foreach ($this->toRemove as $handlerClass => $paths) {
                 if(get_class($handler) == $handlerClass) {
-                    foreach($paths as $path) {
+                    $path = $paths[$identity];
+                    $handler->remove($path);
+                    foreach($paths[$identityCache] as $path) {
                         $handler->remove($path);
                     }
                 }
