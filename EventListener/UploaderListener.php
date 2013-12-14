@@ -88,7 +88,7 @@ class UploaderListener implements EventSubscriber
             $handler = $this->handlerManager->getHandlerForObject($entity);
             $this->toRemove[get_class($handler)][$identity] = $handler->getUri($entity);
             if(!array_key_exists($identityCache, $this->toRemove[get_class($handler)])) {
-                $this->toRemove[get_class($handler)][$identityCache] = [];
+                $this->toRemove[get_class($handler)] = array_merge($this->toRemove[get_class($handler)], array($identityCache => array()));
             }
             // here we can take any filters, we just need the cache path
             /** @var $filter AbstractFilter */
