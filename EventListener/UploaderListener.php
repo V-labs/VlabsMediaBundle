@@ -13,7 +13,6 @@ namespace Vlabs\MediaBundle\EventListener;
 
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
-use Vlabs\MediaBundle\Filter\AbstractFilter;
 use Vlabs\MediaBundle\Handler\HandlerManager;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
 use Vlabs\MediaBundle\Filter\FilterChain;
@@ -91,7 +90,7 @@ class UploaderListener implements EventSubscriber
                 $this->toRemove[get_class($handler)] = array_merge($this->toRemove[get_class($handler)], array($identityCache => array()));
             }
             // here we can take any filters, we just need the cache path
-            /** @var $filter AbstractFilter */
+            /** @var $filter \Vlabs\MediaBundle\Filter\FilterInterface */
             $filter = $this->filterChain->getFilter('resize');
             $cachedPaths = $filter->getAllCachedPaths($entity->getName());
             $this->toRemove[get_class($handler)][$identityCache] = array_merge($this->toRemove[get_class($handler)][$identityCache], $cachedPaths);
