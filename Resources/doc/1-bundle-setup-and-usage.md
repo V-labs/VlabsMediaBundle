@@ -13,7 +13,7 @@ composer.json
 
     {
         require: {
-            "vlabs/media-bundle": "v1.1"
+            "vlabs/media-bundle": ">=1.1"
         }
     }
 
