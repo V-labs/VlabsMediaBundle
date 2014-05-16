@@ -18,7 +18,7 @@
         "symfony/validator": ">=2.1 | >=2.3",
         "imagine/Imagine": "<=0.5",
         "doctrine/orm": "*",
-        "knplabs/knp-gaufrette-bundle": "dev-master",
+        "knplabs/knp-gaufrette-bundle": "v0.1.7",
         "symfony/finder": ">=2.1"
     },
     
