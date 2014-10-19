@@ -85,4 +85,22 @@ class MongoDbAdapterTest extends \PHPUnit_Framework_TestCase
         $adapter = new MongoDbAdapter();
         $adapter->getClass($this->getBaseFileMock());
     }
+
+    /**
+     * getClass() must return object's parent class if ODM proxy object is passed
+     */
+    public function testGetClassFromOdmProxy()
+    {
+        $odmProxyMock = $this->getMockBuilder('Vlabs\MediaBundle\Tests\DummyFileOdmProxy')
+            ->getMockForAbstractClass();
+
+        $adapter = new MongoDbAdapter();
+
+        $classFromMock = $adapter->getClass($odmProxyMock);
+
+        // phpunit mock itself is a subclass of a requested class, need to get level up
+        $class = get_parent_class($classFromMock);
+
+        $this->assertEquals('Vlabs\MediaBundle\Tests\DummyFile', $class);
+    }
 }

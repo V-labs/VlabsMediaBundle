@@ -12,7 +12,7 @@
 namespace Vlabs\MediaBundle\Adapter\Odm\MongoDb;
 
 use Doctrine\Common\EventArgs;
-use Doctrine\ODM\MongoDB\Proxy;
+use Doctrine\ODM\MongoDB\Proxy\Proxy;
 use Vlabs\MediaBundle\Adapter\AdapterInterface;
 
 /**
