@@ -45,7 +45,7 @@ abstract class BaseFile implements BaseFileInterface
     /**
      * @var string $createdAt
      *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     private $createdAt;
 
