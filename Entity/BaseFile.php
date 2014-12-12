@@ -45,7 +45,7 @@ abstract class BaseFile implements BaseFileInterface
     /**
      * @var string $createdAt
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -123,7 +123,7 @@ abstract class BaseFile implements BaseFileInterface
      * @param  \DateTime $createdAt
      * @return BaseFile
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
