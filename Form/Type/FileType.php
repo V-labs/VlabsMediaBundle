@@ -51,6 +51,7 @@ class FileType extends AbstractType
         $view->vars = array_replace($view->vars, array(
             'data' => $form->getViewData()
         ));
+        $view->vars['preview'] = $options['preview'];
     }
 
     /**
@@ -62,7 +63,8 @@ class FileType extends AbstractType
             'compound' => false,
             'add_del' => false,
             'del_label' => null,
-            'data_class' => null
+            'data_class' => null,
+            'preview' => true
         ));
     }
 
