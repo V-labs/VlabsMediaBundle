@@ -21,7 +21,7 @@ use Vlabs\MediaBundle\Filter\FilterInterface;
  *
  * @author Valentin Ferriere <valentin.ferriere@gmail.com>
  */
-class TwigExtension extends \Twig_Extension
+class TwigExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
     /* @var \Twig_Environment */
     protected $environment;
@@ -43,17 +43,17 @@ class TwigExtension extends \Twig_Extension
 
     public function getFunctions()
     {
-        return array(
-            'getBaseFile' => new \Twig_Function_Method($this, 'getBaseFile')
-        );
+        return [
+            new \Twig_SimpleFunction('getBaseFile', [$this, 'getBaseFile'])
+        ];
     }
 
     public function getFilters()
     {
-        return array(
-            'vlabs_filter' => new \Twig_Filter_Method($this, 'filter'),
-            'vlabs_media' => new \Twig_Filter_Method($this, 'displayTemplate')
-        );
+        return [
+            new \Twig_SimpleFilter('vlabs_filter', [$this, 'filter']),
+            new \Twig_SimpleFilter('vlabs_media', [$this, 'displayTemplate'])
+        ];
     }
 
     /**
