@@ -9,22 +9,24 @@ All media are considered as objects, and if they implement the **[BaseFileInterf
 Installation
 ------------
 
-composer.json
+```javascript
+// composer.json
 
-    {
-        require: {
-            "vlabs/media-bundle": ">=1.1"
-        }
+{
+    require: {
+        "vlabs/media-bundle": ">=1.1"
     }
+}
+```
 
-AppKernel.php
+```php
+// AppKernel.php
 
-    <?php
+$bundles = array(
+    new Vlabs\MediaBundle\VlabsMediaBundle(),
+);
+```
 
-    $bundles = array(
-        new Vlabs\MediaBundle\VlabsMediaBundle(),
-    );
-    
     
 Usage
 -----
@@ -36,54 +38,55 @@ We work here with Doctrine ORM (the bundle also works with Doctrine ODM MongoDB)
 
 So for our Image class :
 
-    <?php
+```php
+<?php
 
-    namespace My\FooBundle\Entity;
+namespace My\FooBundle\Entity;
 
-    use Doctrine\ORM\Mapping as ORM;
-    use Vlabs\MediaBundle\Entity\BaseFile as VlabsFile;
-    use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
+use Vlabs\MediaBundle\Entity\BaseFile as VlabsFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * My\FooBundle\Entity\File
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="vlabs_image")
+ */
+class Image extends VlabsFile
+{
+    /**
+     * @var string $path
+     *
+     * @ORM\Column(name="path", type="string", length=255)
+     * @Assert\Image()
+     */
+    private $path;
 
     /**
-     * My\FooBundle\Entity\File
+     * Set path
      *
-     * @ORM\Entity
-     * @ORM\Table(name="vlabs_image")
+     * @param string $path
+     * @return Image
      */
-    class Image extends VlabsFile
+    public function setPath($path)
     {
-        /**
-         * @var string $path
-         *
-         * @ORM\Column(name="path", type="string", length=255)
-         * @Assert\Image()
-         */
-        private $path;
-
-        /**
-         * Set path
-         *
-         * @param string $path
-         * @return Image
-         */
-        public function setPath($path)
-        {
-            $this->path = $path;
-
-            return $this;
-        }
-
-        /**
-         * Get path
-         *
-         * @return string 
-         */
-        public function getPath()
-        {
-            return $this->path;
-        }
-
+        $this->path = $path;
+        return $this;
     }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+}
+```
     
 As you can see, our **Image** class is extending [VlabsFile](https://github.com/V-labs/VlabsMediaBundle/blob/master/Entity/BaseFile.php), which is an abstract class that implements the properties that you do not want to handle during a media processing.
 
@@ -91,60 +94,62 @@ The only property that is not implemented is **path**, this allow you to perform
 
 **2)** Then, you can link your **Image** object with your main entity property :
 
-    <?php
+```php
+<?php
 
-    namespace My\FooBundle\Entity;
-    
-    use Doctrine\ORM\Mapping as ORM;
-    use Symfony\Component\Validator\Constraints as Assert;
-    use Vlabs\MediaBundle\Annotation\Vlabs;
-    
-    /**
-     * My\FooBundle\Entity\Article
-     *
-     * @ORM\Table(name="article")
-     * @ORM\Entity
-     */
-    class Article
-    {
+namespace My\FooBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vlabs\MediaBundle\Annotation\Vlabs;
+
+/**
+ * My\FooBundle\Entity\Article
+ *
+ * @ORM\Table(name="article")
+ * @ORM\Entity
+ */
+class Article
+{
 
     /* other properties / setters & getters */
 
     /**
-     * @var VlabsFile
-     *
-     * @ORM\OneToOne(targetEntity="Image", cascade={"persist", "remove"}, orphanRemoval=true))
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="image", referencedColumnName="id")
-     * })
-     * 
-     * @Vlabs\Media(identifier="image_entity", upload_dir="files/images")
-     * @Assert\Valid()
-     */
+    * @var VlabsFile
+    *
+    * @ORM\OneToOne(targetEntity="Image", cascade={"persist", "remove"}, orphanRemoval=true))
+    * @ORM\JoinColumns({
+    *   @ORM\JoinColumn(name="image", referencedColumnName="id")
+    * })
+    * 
+    * @Vlabs\Media(identifier="image_entity", upload_dir="files/images")
+    * @Assert\Valid()
+    */
     private $image;
 
     /**
-     * Set image
-     *
-     * @param My\FooBundle\Entity\Image $image
-     * @return Article
-     */
+    * Set image
+    *
+    * @param My\FooBundle\Entity\Image $image
+    * @return Article
+    */
     public function setImage(Image $image = null)
     {
         $this->image = $image;
-    
+
         return $this;
     }
 
     /**
-     * Get image
-     *
-     * @return My\FooBundle\Entity\Image
-     */
+    * Get image
+    *
+    * @return My\FooBundle\Entity\Image
+    */
     public function getImage()
     {
         return $this->image;
     }
+```
 
 As you can see, the bundle provides an annotation **@Vlabs\Media()** you need to put in place on the property of each media you want to manage.
 The annotation use two options :
@@ -157,14 +162,16 @@ The validator will validate your media according to the constraints of the **Ima
 
 **3)** Now that your entities are configured, proceed to the bundle configuration.
 
-config.yml
+```yaml
+ # config.yml
 
-    vlabs_media:
-        image_cache:
-            cache_dir: files/c
-        mapping: 
-            image_entity:
-              class: My\FooBundle\Entity\Image
+vlabs_media:
+    image_cache:
+        cache_dir: files/c
+    mapping: 
+        image_entity:
+          class: My\FooBundle\Entity\Image
+```
 
 Here we find the identifier **image_entity** that you configured on the entity. It can be what you want.
 It just need to be the same between each property and configuration.
@@ -185,28 +192,32 @@ Then, you can run the command to create the **vlabs_image** table with all the a
 
 Here it's simple, just use the **vlabs_file** type  for all the fields that you want to manage with the bundle.
 
-ArticleType.php
+```php
+// ArticleType.php
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('image', 'vlabs_file', array(
-                    'required' => false
-                ))
-        ;
-    }
-
+public function buildForm(FormBuilderInterface $builder, array $options)
+{
+    $builder
+        ->add('image', 'vlabs_file', array(
+                'required' => false
+            ))
+    ;
+}
+```
 
 ### Display a media on front end
 
 The bundle provided a twig method that you can call from any template :
-
-    {{ article.image|vlabs_media('default') }} // will return the path on the filesystem
+```twig
+{{ article.image|vlabs_media('default') }} // will return the path on the filesystem
+```
 
 For all images, if you want to resize, you can use :
     
-    // return the img tag for resized image
-    {{ article.image|vlabs_filter('resize', { 'width' : 300, 'height' : 300 })|vlabs_media('image') }}
+```twig
+// return the img tag for resized image
+{{ article.image|vlabs_filter('resize', { 'width' : 300, 'height' : 300 })|vlabs_media('image') }}
+```
 
 
 Documentation
