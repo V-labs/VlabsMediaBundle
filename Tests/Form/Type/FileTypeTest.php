@@ -3,13 +3,14 @@
 namespace Vlabs\MediaBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\FileTypeTest as BaseFileTypeTest;
+use Vlabs\MediaBundle\Form\Type\FileType;
 use Vlabs\MediaBundle\Tests\Form\Extension\TypeExtensionTest;
 
 class FileTypeTest extends BaseFileTypeTest
 {
     public function testPassPathAsDataToView()
     {
-        $form = $this->factory->create('vlabs_file');
+        $form = $this->factory->create(FileType::class);
         $form->setParent($this->getFormMock());
         $form->setData($this->createBaseFileMock('fichiers/test-file.jpg'));
         $view = $form->createView();
@@ -20,7 +21,7 @@ class FileTypeTest extends BaseFileTypeTest
 
     public function testPassNullAsDataToView()
     {
-        $form = $this->factory->create('vlabs_file');
+        $form = $this->factory->create(FileType::class);
         $form->setData(null);
 
         $view = $form->createView();

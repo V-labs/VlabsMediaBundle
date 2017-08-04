@@ -183,14 +183,14 @@ Then, you can run the command to create the **vlabs_image** table with all the a
 
 **4)** Last step : form configuration
 
-Here it's simple, just use the **vlabs_file** type  for all the fields that you want to manage with the bundle.
+Here it's simple, just use the **Vlabs\MediaBundle\Form\Type\FileType** type  for all the fields that you want to manage with the bundle.
 
 ArticleType.php
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image', 'vlabs_file', array(
+            ->add('image', 'Vlabs\MediaBundle\Form\Type\FileType', array(
                     'required' => false
                 ))
         ;

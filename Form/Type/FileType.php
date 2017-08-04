@@ -13,7 +13,7 @@ namespace Vlabs\MediaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Vlabs\MediaBundle\Form\DataTransformer\BaseFileToStringTransformer;
@@ -48,22 +48,22 @@ class FileType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars = array_replace($view->vars, array(
+        $view->vars = array_replace($view->vars, [
             'data' => $form->getViewData()
-        ));
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'compound' => false,
             'add_del' => false,
             'del_label' => null,
             'data_class' => null
-        ));
+        ]);
     }
 
     /**
@@ -71,13 +71,13 @@ class FileType extends AbstractType
      */
     public function getParent()
     {
-        return 'file';
+        return 'Symfony\Component\Form\Extension\Core\Type\FileType';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'vlabs_file';
     }

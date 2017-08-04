@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Tests\FormIntegrationTestCase;
 use Vlabs\MediaBundle\EventListener\BaseFileListener;
+use Vlabs\MediaBundle\Form\Type\FileType;
 use Vlabs\MediaBundle\Tests\Form\Extension\TypeExtensionTest;
 use Vlabs\MediaBundle\Tests\DummyFile;
 
@@ -26,7 +27,7 @@ class BaseFileListenerTest extends FormIntegrationTestCase
         $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->builder = new FormBuilder(null, null, $dispatcher, $this->factory);
 
-        $this->form = $this->factory->create('vlabs_file', null, array('add_del' => true, 'del_label' => 'Delete'));
+        $this->form = $this->factory->create(FileType::class, null, array('add_del' => true, 'del_label' => 'Delete'));
         $this->form->setParent($this->getFormMock());
     }
 
