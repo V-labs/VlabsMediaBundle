@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormView;
 use Vlabs\MediaBundle\Form\DataTransformer\BaseFileToStringTransformer;
 use Vlabs\MediaBundle\EventListener\BaseFileListener;
 use Vlabs\MediaBundle\Handler\HandlerManager;
+use Symfony\Component\Form\Extension\Core\Type\FileType as BaseFileType;
 
 /**
  * @author Valentin Ferriere <valentin.ferriere@gmail.com>
@@ -71,14 +72,22 @@ class FileType extends AbstractType
      */
     public function getParent()
     {
-        return 'file';
+        return BaseFileType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'vlabs_file';
     }
+
+    /**
+     * Backwards compatability for Symfony < 2.7
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
+    }    
 }

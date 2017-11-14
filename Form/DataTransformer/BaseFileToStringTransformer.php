@@ -27,7 +27,8 @@ class BaseFileToStringTransformer implements DataTransformerInterface
      */
     public function transform($data)
     {
-        return ($data instanceof BaseFileInterface) ? (string) $data->getPath() : null;
+        $file = new \Symfony\Component\HttpFoundation\File\File($data->getPath(), false);
+        return ($data instanceof BaseFileInterface) ? $file : null;
     }
 
     /**
