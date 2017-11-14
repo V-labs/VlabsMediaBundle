@@ -13,6 +13,7 @@ namespace Vlabs\MediaBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Vlabs\MediaBundle\Entity\BaseFileInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Return the path in the form view data.
@@ -27,7 +28,7 @@ class BaseFileToStringTransformer implements DataTransformerInterface
      */
     public function transform($data)
     {
-        return ($data instanceof BaseFileInterface) ? (string) $data->getPath() : null;
+        return ($data instanceof BaseFileInterface) ? new File($data->getPath(), false) : null;
     }
 
     /**

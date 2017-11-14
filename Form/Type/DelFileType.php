@@ -13,6 +13,7 @@ namespace Vlabs\MediaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 /**
  * @author Valentin Ferriere <valentin.ferriere@gmail.com>
@@ -43,14 +44,22 @@ class DelFileType extends AbstractType
      */
     public function getParent()
     {
-        return 'checkbox';
+        return CheckboxType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'vlabs_del_file';
+    }
+
+    /**
+     * Backwards compatability for Symfony < 2.7
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }
