@@ -17,7 +17,7 @@
         "symfony/form": ">=2.1 | >=2.3",
         "symfony/validator": ">=2.1 | >=2.3",
         "doctrine/orm": "*",
-        "knplabs/knp-gaufrette-bundle": "v0.1.7",
+        "knplabs/knp-gaufrette-bundle": "*",
         "symfony/finder": ">=2.1"
     },
     
