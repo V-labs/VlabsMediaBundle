@@ -73,11 +73,11 @@
         <!-- form type -->
         <service id="vlabs_media.type.file" class="%vlabs_media.type.file.class%">
             <argument type="service" id="vlabs_media.handler.manager" />
-            <tag name="form.type" alias="vlabs_file" />
+            <tag name="form.type" />
         </service>
 
         <service id="vlabs_media.type.del_file" class="%vlabs_media.type.del_file.class%">
-            <tag name="form.type" alias="vlabs_del_file" />
+            <tag name="form.type" />
         </service>
 
         <!-- listeners -->

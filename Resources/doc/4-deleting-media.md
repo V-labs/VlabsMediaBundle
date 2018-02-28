@@ -5,7 +5,7 @@ Deleting media
 
 In your entity form type, you can use two options provided by the bundle to automatically display a non mapped checkbox under your media :
 
-    ->add('document', 'vlabs_file', array(
+    ->add('document', 'Vlabs\MediaBundle\Form\Type\FileType', array(
                 'required' => false,
                 'add_del' => true,
                 'del_label' => 'Delete ?'
